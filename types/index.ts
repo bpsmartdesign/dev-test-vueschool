@@ -17,3 +17,9 @@ export interface User {
 }
 
 export type PostWithUser = Post & { user: User };
+
+export interface Pagination {
+  currentPage: number;
+  perPage: number;
+  total: number
+}
