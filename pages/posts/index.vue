@@ -34,9 +34,6 @@ const {
   },
 });
 
-const parseDate = (timestamp?: number) => {
-  if (timestamp) return new Date(timestamp).toLocaleString("en-US");
-};
 const onChangePage = async (page: number) => {
   pagination.value.currentPage = page;
   await getPosts();
@@ -76,6 +73,7 @@ onMounted(async () => {
     </div>
   </div>
   <div class="container mx-auto py-12">
+    <h1 class="text-4xl font-bold text-gray-800 mb-8">Blog</h1>
     <div
       v-if="pending"
       class="text-lg h-screen flex justify-center items-center"
@@ -84,50 +82,7 @@ onMounted(async () => {
     </div>
     <template v-else>
       <div class="grid grid-cols-4 gap-4 mb-4">
-        <NuxtLink
-          v-for="post in posts"
-          :key="post.id"
-          :to="`/posts/${post.id}`"
-          class="bg-white shadow-2xl rounded-lg mb-6 tracking-wide cursor-pointer"
-        >
-          <NuxtImg
-            :src="post.image ?? undefined"
-            :alt="post.title ?? 'Post Image'"
-            class="w-full h-48 rounded-lg rounded-b-none"
-          />
-          <div class="p-4">
-            <h2 class="font-bold text-xl text-gray-800 tracking-normal">
-              {{ post.title }}
-            </h2>
-            <p class="text-sm text-gray-600 italic pt-2 pb-4">
-              {{ post.excerpt }}
-            </p>
-            <div class="flex items-center gap-2">
-              <NuxtImg
-                width="50"
-                height="50"
-                quality="80"
-                fit="cover"
-                loading="lazy"
-                class="rounded-md"
-                :placeholder="[50, 25, 75, 5]"
-                :src="post.user?.avatar ?? undefined"
-                :alt="post.user?.firstName ?? 'User avatar'"
-              />
-              <div class="flex flex-col gap-1">
-                <h2 class="text-sm tracking-tighter text-gray-900">
-                  by
-                  <b class="underline">
-                    {{ `${post.user?.firstName} ${post.user?.lastName}` }}
-                  </b>
-                </h2>
-                <span class="text-xs text-gray-400">{{
-                  parseDate(post.publishedAt ?? undefined)
-                }}</span>
-              </div>
-            </div>
-          </div>
-        </NuxtLink>
+        <PostCard v-for="post in posts" :key="post.id" :post="post" />
       </div>
       <FlexPagination
         v-model:current-page="pagination.currentPage"

@@ -13,6 +13,6 @@ export default defineNuxtConfig({
     },
   },
   image: {
-    domaines: [""],
+    domaines: ["picsum.photos"],
   },
 });

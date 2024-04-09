@@ -4,8 +4,6 @@ export interface FlexPaginationProps {
   totalItems: number;
   currentPage?: number;
   maxLinksDisplayed?: number;
-  noRouter?: boolean;
-  routerQueryKey?: string;
 }
 export interface FlexPaginationEmits {
   (e: "update:currentPage", currentPage: number): void;
@@ -15,8 +13,6 @@ const emits = defineEmits<FlexPaginationEmits>();
 const props = withDefaults(defineProps<FlexPaginationProps>(), {
   currentPage: 1,
   maxLinksDisplayed: 4,
-  useRouter: true,
-  routerQueryKey: "page",
 });
 
 const lastPage = computed(
@@ -58,15 +54,11 @@ const pages = computed(() => {
 });
 
 const handleLinkClick = (e: MouseEvent, page = 1) => {
+  e.preventDefault();
+  e.stopPropagation();
+
   const _page = Math.max(1, Math.min(page, lastPage.value));
   emits("update:currentPage", _page);
-
-  if (props.noRouter) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    return false;
-  }
 };
 </script>
 
