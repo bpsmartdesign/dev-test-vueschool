@@ -73,7 +73,12 @@ onMounted(async () => {
     </div>
   </div>
   <div class="container mx-auto py-12">
-    <h1 class="text-4xl font-bold text-gray-800 mb-8">Blog</h1>
+    <h1 class="text-4xl text-center font-bold text-gray-800 mb-8">Our Blog</h1>
+    <h4 class="text-lg text-center text-gray-500">
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rem, deleniti
+      vel sunt quos excepturi earum aspernatur perferendis repellat facilis
+      omnis voluptate nemo, neque ipsum ex saepe ad in repellendus dicta?
+    </h4>
     <div
       v-if="pending"
       class="text-lg h-screen flex justify-center items-center"
