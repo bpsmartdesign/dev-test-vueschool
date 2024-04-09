@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import type { Pagination } from "~/types";
 
-const pagination = ref<Pagination>({ currentPage: 2, perPage: 12, total: 0 });
+const pagination = ref<Pagination>({ currentPage: 1, perPage: 12, total: 0 });
 
 const offset = computed(
   () => (pagination.value.currentPage - 1) * pagination.value.perPage
 );
+
 const { refresh: countPosts } = useFetch("/api/posts/count", {
   method: "get",
   immediate: false,
   watch: false,
   onResponse({ response }) {
-    pagination.value.total = response._data?.count ?? 0
+    pagination.value.total = response._data?.count ?? 0;
   },
 });
 const {
@@ -26,14 +27,16 @@ const {
   query: {
     limit: pagination.value.perPage,
     offset,
-    inclue: "user",
-    select: "title",
-  },
-  onResponse({ response }) {
-    // Process the response data
-    console.log(": ", response);
+    include: "user",
+    order: "newestFirst",
+    select:
+      "id,title,excerpt,publishedAt,image,user.firstName,user.lastName,user.avatar,user.email",
   },
 });
+
+const parseDate = (timestamp?: number) => {
+  if (timestamp) return new Date(timestamp).toLocaleString("en-US");
+};
 const onChangePage = async (page: number) => {
   pagination.value.currentPage = page;
   await getPosts();
@@ -72,7 +75,55 @@ onMounted(async () => {
       </ul>
     </div>
   </div>
-  <div class="h-screen items-center grid grid-cols-3">
-    <div v-if="pending" class="text-lg">Loading ...</div>
+  <div class="container mx-auto flex items-center justify-center">
+    <div v-if="pending" class="text-lg h-screen flex justify-center items-center">
+      Loading ...
+    </div>
+    <div v-else class="grid grid-cols-4 gap-4 py-12">
+      <NuxtLink
+        v-for="post in posts"
+        :key="post.id"
+        :to="`/posts/${post.id}`"
+        class="bg-white shadow-2xl rounded-lg mb-6 tracking-wide cursor-pointer"
+      >
+        <NuxtImg
+          :src="post.image ?? undefined"
+          :alt="post.title ?? 'Post Image'"
+          class="w-full h-48 rounded-lg rounded-b-none"
+        />
+        <div class="p-4">
+          <h2 class="font-bold text-xl text-gray-800 tracking-normal">
+            {{ post.title }}
+          </h2>
+          <p class="text-sm text-gray-600 italic pt-2 pb-4">
+            {{ post.excerpt }}
+          </p>
+          <div class="flex items-center gap-2">
+            <NuxtImg
+              width="50"
+              height="50"
+              quality="80"
+              fit="cover"
+              loading="lazy"
+              class="rounded-md"
+              :placeholder="[50, 25, 75, 5]"
+              :src="post.user?.avatar ?? undefined"
+              :alt="post.user?.firstName ?? 'User avatar'"
+            />
+            <div class="flex flex-col gap-1">
+              <h2 class="text-sm tracking-tighter text-gray-900">
+                by
+                <b class="underline">
+                  {{ `${post.user?.firstName} ${post.user?.lastName}` }}
+                </b>
+              </h2>
+              <span class="text-xs text-gray-400">{{
+                parseDate(post.publishedAt ?? undefined)
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </NuxtLink>
+    </div>
   </div>
 </template>

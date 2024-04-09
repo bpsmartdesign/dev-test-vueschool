@@ -23,7 +23,7 @@ useFetch('/api/posts', {
         offset: 40,
         include: 'user'
         order: 'oldestFirst',
-        select: "id,title,content,excerpt,publishedAt,image,content,user.firstName, user.lastName, user.avatar, user.email",
+        select: "id,title,content,excerpt,publishedAt,image,user.firstName,user.lastName,user.avatar,user.email",
     }
 })
 ```
