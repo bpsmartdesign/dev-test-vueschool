@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxt/image"],
   nitro: {
     experimental: {
       database: true,
@@ -11,5 +11,8 @@ export default defineNuxtConfig({
     "/": {
       ssr: false,
     },
+  },
+  image: {
+    domaines: [""],
   },
 });
