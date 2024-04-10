@@ -212,12 +212,14 @@ onMounted(async () => {
         </span>
       </button>
     </div>
-    <div
-      v-if="pending"
-      class="text-lg h-screen flex justify-center items-center"
-    >
-      Loading ...
-    </div>
+    <template v-if="pending">
+      <div v-if="blogView === 'grid'" class="grid grid-cols-4 gap-4 mb-4">
+        <PostLoaderCard v-for="n in 4" :key="n" />
+      </div>
+      <div v-else class="flex flex-col gap-4 mb-4">
+        <PostLoaderList v-for="n in 4" :key="n" />
+      </div>
+    </template>
     <template v-else>
       <div v-if="blogView === 'grid'" class="grid grid-cols-4 gap-4 mb-4">
         <PostCard v-for="post in posts" :key="post.id" :post="post" />
