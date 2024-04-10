@@ -1,17 +1,21 @@
 <script lang="ts" setup>
 import type { Pagination } from "~/types";
 
-const route = useRoute()
+const route = useRoute();
+const router = useRouter();
 
 const pagination = ref<Pagination>({ currentPage: 1, perPage: 12, total: 0 });
-const newestFirst = ref<boolean>(false);
 const blogView = ref<"grid" | "list">("grid");
 
+const order = computed(
+  () =>
+    (route.query?.order &&
+    ["newestFirst", "oldestFirst"].includes(route.query?.order as string)
+      ? route.query.order
+      : "newestFirst") ?? "newestFirst"
+);
 const offset = computed(
   () => (pagination.value.currentPage - 1) * pagination.value.perPage
-);
-const order = computed(() =>
-  newestFirst.value ? "newestFirst" : "oldestFirst"
 );
 const query = computed(() => ({
   limit: pagination.value.perPage,
@@ -53,12 +57,16 @@ const getPosts = async () => {
     console.error("an error has occured: ", error.value);
   }
 };
+const toggleSort = async () => {
+  const newOrder =
+    order.value === "newestFirst" ? "oldestFirst" : "newestFirst";
+  router.push({ query: { order: newOrder } });
+  await getPosts();
+};
 
 onMounted(async () => {
   await countPosts();
   await getPosts();
-
-  console.log('q: ', route.query)
 });
 </script>
 
@@ -159,15 +167,10 @@ onMounted(async () => {
       </div>
       <button
         class="text-sm text-gray-500 inline-flex items-center gap-1 transition-colors duration-300 ease-in focus:outline-none hover:text-indigo-400 focus:text-indigo-400 p-2"
-        @click="
-          () => {
-            newestFirst = !newestFirst;
-            getPosts();
-          }
-        "
+        @click="toggleSort"
       >
         <svg
-          v-if="newestFirst"
+          v-if="order === 'newestFirst'"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -205,7 +208,7 @@ onMounted(async () => {
           </g>
         </svg>
         <span class="font-bold underline">
-          Show {{ newestFirst ? "Newest" : "Oldest" }}
+          Show {{ order === "newestFirst" ? "Oldest" : "Newest" }}
         </span>
       </button>
     </div>
