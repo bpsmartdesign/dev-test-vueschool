@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import type { Pagination } from "~/types";
 
+const route = useRoute()
+
 const pagination = ref<Pagination>({ currentPage: 1, perPage: 12, total: 0 });
-const newestFirst = ref<boolean>(true);
+const newestFirst = ref<boolean>(false);
 const blogView = ref<"grid" | "list">("grid");
 
 const offset = computed(
@@ -35,7 +37,6 @@ const {
   refresh: listPosts,
 } = useFetch("/api/posts", {
   method: "get",
-
   immediate: false,
   watch: false,
   query: query.value,
@@ -56,6 +57,8 @@ const getPosts = async () => {
 onMounted(async () => {
   await countPosts();
   await getPosts();
+
+  console.log('q: ', route.query)
 });
 </script>
 
@@ -201,9 +204,9 @@ onMounted(async () => {
             <path stroke-linejoin="round" d="M17 4v16l3-4" />
           </g>
         </svg>
-        <span class="font-bold underline">{{
-          newestFirst ? "Newest" : "Oldest"
-        }}</span>
+        <span class="font-bold underline">
+          Show {{ newestFirst ? "Newest" : "Oldest" }}
+        </span>
       </button>
     </div>
     <div
@@ -213,8 +216,11 @@ onMounted(async () => {
       Loading ...
     </div>
     <template v-else>
-      <div class="grid grid-cols-4 gap-4 mb-4">
+      <div v-if="blogView === 'grid'" class="grid grid-cols-4 gap-4 mb-4">
         <PostCard v-for="post in posts" :key="post.id" :post="post" />
+      </div>
+      <div v-else class="flex flex-col gap-4 mb-4">
+        <PostList v-for="post in posts" :key="post.id" :post="post" />
       </div>
       <FlexPagination
         v-model:current-page="pagination.currentPage"
