@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import DOMPurify from "dompurify";
+
 const { params } = useRoute();
 const router = useRouter();
 
@@ -55,13 +57,16 @@ onMounted(async () => {
       </ul>
     </div>
   </div>
-  <main class="max-w-screen-md mx-auto py-12">
+  <PostLoaderArticle v-if="true" />
+  <main v-else class="max-w-screen-md mx-auto py-12">
     <h2
       class="font-bold text-4xl text-gray-800 tracking-normal leading-relaxed"
     >
       {{ post?.title }}
     </h2>
-    <p class="border-l-4 border-gray-300 pl-4 bg-gray-100 text-sm text-gray-600 italic p-2 mb-4">
+    <p
+      class="border-l-4 border-gray-300 pl-4 bg-gray-100 text-sm text-gray-600 italic p-2 mb-4"
+    >
       {{ post?.excerpt }}
     </p>
     <div class="relative">
@@ -222,6 +227,6 @@ onMounted(async () => {
         <span>3 min read</span>
       </div>
     </div>
-    
+    <div class="py-12" v-html="DOMPurify.sanitize(post?.content)" />
   </main>
 </template>
