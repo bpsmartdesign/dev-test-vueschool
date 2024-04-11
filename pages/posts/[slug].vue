@@ -1,7 +1,10 @@
 <script lang="ts" setup>
+import { seoMeta } from "~/data";
+
 const { params } = useRoute();
 const router = useRouter();
 
+const pageTitle = ref<string>("");
 const postId = computed(() => params?.slug);
 
 const { data: post, pending: loadingPost } = useFetch(
@@ -17,8 +20,19 @@ const { data: post, pending: loadingPost } = useFetch(
     onResponseError({ response }) {
       router.push("/404");
     },
+    onResponse({ response }) {
+      pageTitle.value = `VueSchool Post - ${post.value?.title}`;
+    },
   }
 );
+useHead({
+  title: pageTitle,
+  meta: [...seoMeta, { hid: "og:title", name: "og:title", content: pageTitle }],
+  link: [
+    { rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
+    { rel: "icon", type: "image/x-icon", href: "/logo.png" },
+  ],
+});
 </script>
 
 <template>

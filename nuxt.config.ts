@@ -26,13 +26,14 @@ export default defineNuxtConfig({
       locale: "en_US",
       url: "https://vueschool-dev.vercell.app",
       title: "VueSchool Blog",
+      image: "https://vueschool-dev.vercell.app/favicon.ico",
       description:
         "Elevate your web development knowledge and become a Vue.js pro with VueSchool Blog",
     },
     twitter: {
       handle: "@bpsmartdesign",
       site: "@bpsmartdesign",
-      cardType: "summary_large_image",
+      cardType: "summary",
     },
     robots: {
       UserAgent: "*",

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { seoMeta } from "~/data";
 import type { Pagination } from "~/types";
 
 const route = useRoute();
@@ -67,6 +68,21 @@ const toggleSort = async () => {
 onMounted(async () => {
   await countPosts();
   await getPosts();
+});
+useHead({
+  title: "VueSchool Blog posts",
+  meta: [
+    ...seoMeta,
+    {
+      hid: "og:title",
+      name: "og:title",
+      content: "VueSchool Blog posts",
+    },
+  ],
+  link: [
+    { rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
+    { rel: "icon", type: "image/x-icon", href: "/logo.png" },
+  ],
 });
 </script>
 
