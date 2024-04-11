@@ -20,9 +20,11 @@ const parseDate = (timestamp?: number) => {
     <NuxtImg
       :src="props.post?.image ?? undefined"
       :alt="props.post?.title ?? 'Post Image'"
-      class="w-full h-48 rounded-lg rounded-b-none"
+      class="w-full rounded-lg rounded-b-none"
       format="jpg"
       quality="80"
+      width="300"
+      height="200"
       fit="cover"
       loading="lazy"
     />

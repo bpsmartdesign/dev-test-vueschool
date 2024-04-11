@@ -16,7 +16,9 @@ const props = withDefaults(defineProps<PostCardProps>(), {
     <NuxtImg
       :src="props.post?.image ?? undefined"
       :alt="props.post?.title ?? 'Post Image'"
-      class="h-20 rounded-lg"
+      class="rounded-lg"
+      height="120"
+      width="160"
       format="jpg"
       quality="80"
       fit="cover"
