@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@nuxt/image", "@nuxtjs/seo"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@nuxt/image",
+    "@nuxtjs/seo",
+    "@nuxtjs/sitemap",
+  ],
   nitro: {
     experimental: {
       database: true,
@@ -30,13 +35,12 @@ export default defineNuxtConfig({
       description:
         "Elevate your web development knowledge and become a Vue.js pro with VueSchool Blog",
     },
-    twitter: {
-      handle: "@bpsmartdesign",
-      site: "@bpsmartdesign",
-      cardType: "summary",
-    },
     robots: {
       UserAgent: "*",
     },
+  },
+  sitemap: {
+    hostname: "https://vueschool-dev.vercell.app",
+    gzip: true,
   },
 });
