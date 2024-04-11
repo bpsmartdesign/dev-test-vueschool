@@ -12,6 +12,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@nuxtjs/sitemap": "^5.1.4",
     "@nuxtjs/tailwindcss": "^6.11.4",
     "@vueuse/nuxt": "^10.9.0",
     "date-fns": "^3.6.0",
