@@ -1,29 +1,24 @@
 <script lang="ts" setup>
-import DOMPurify from "dompurify";
-
 const { params } = useRoute();
 const router = useRouter();
 
 const postId = computed(() => params?.slug);
 
-const {
-  data: post,
-  pending: loadingPost,
-  error,
-} = useFetch(`/api/posts/${postId.value}`, {
-  method: "get",
-  watch: false,
-  query: {
-    include: "user",
-    select:
-      "id,title,excerpt,publishedAt,image,content,user.firstName,user.lastName,user.avatar,user.email",
-  },
-  onResponseError() {
-    router.push("/404");
-  },
-});
-
-console.log("error: ", error.value);
+const { data: post, pending: loadingPost } = useFetch(
+  `/api/posts/${postId.value}`,
+  {
+    method: "get",
+    watch: false,
+    query: {
+      include: "user",
+      select:
+        "id,title,excerpt,publishedAt,image,content,user.firstName,user.lastName,user.avatar,user.email",
+    },
+    onResponseError({ response }) {
+      router.push("/404");
+    },
+  }
+);
 </script>
 
 <template>
@@ -210,7 +205,7 @@ console.log("error: ", error.value);
       </div>
       <article
         class="py-4 prose max-w-full text-gray-600"
-        v-html="DOMPurify?.sanitize(post?.content)"
+        v-html="post?.content"
       />
     </template>
   </main>
