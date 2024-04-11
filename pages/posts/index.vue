@@ -229,7 +229,10 @@ useHead({
       </button>
     </div>
     <template v-if="pending">
-      <div v-if="blogView === 'grid'" class="grid grid-cols-4 gap-4 mb-4">
+      <div
+        v-if="blogView === 'grid'"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4"
+      >
         <PostLoaderCard v-for="n in 4" :key="n" />
       </div>
       <div v-else class="flex flex-col gap-4 mb-4">
@@ -237,7 +240,10 @@ useHead({
       </div>
     </template>
     <template v-else>
-      <div v-if="blogView === 'grid'" class="grid grid-cols-4 gap-4 mb-4">
+      <div
+        v-if="blogView === 'grid'"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4"
+      >
         <PostCard v-for="post in posts" :key="post.id" :post="post" />
       </div>
       <div v-else class="flex flex-col gap-4 mb-4">
