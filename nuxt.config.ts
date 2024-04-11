@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@nuxt/image"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxt/image", "@nuxtjs/seo"],
   nitro: {
     experimental: {
       database: true,
@@ -14,5 +14,28 @@ export default defineNuxtConfig({
   },
   image: {
     domaines: ["picsum.photos"],
+  },
+  site: {
+    title: "VueSchool Blog",
+    description:
+      "Elevate your web development knowledge and become a Vue.js pro with VueSchool Blog",
+    canonical: "https://vueschool-dev.vercell.app",
+    openGraph: {
+      site_name: "VueSchool Blog",
+      type: "website",
+      locale: "en_US",
+      url: "https://vueschool-dev.vercell.app",
+      title: "VueSchool Blog",
+      description:
+        "Elevate your web development knowledge and become a Vue.js pro with VueSchool Blog",
+    },
+    twitter: {
+      handle: "@bpsmartdesign",
+      site: "@bpsmartdesign",
+      cardType: "summary_large_image",
+    },
+    robots: {
+      UserAgent: "*",
+    },
   },
 });
